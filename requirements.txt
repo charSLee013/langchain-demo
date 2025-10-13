@@ -1,0 +1,7 @@
+# RAG 演示脚本依赖
+langchain-core
+langchain-community
+langchain-text-splitters
+python-dotenv
+requests
+chromadb
