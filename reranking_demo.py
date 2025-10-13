@@ -40,20 +40,21 @@ def main() -> None:
     vs, stats = index_markdown(Path.cwd())
     query = sys.argv[1] if len(sys.argv) > 1 else "查询扩展和重排序技术"
     initial = vs.similarity_search(query, k=5)
-    reranked = siliconflow_rerank(query, initial, top_n=3)
+    reranked = siliconflow_rerank(query, initial, top_n=5)
 
     print(f"query: {query}")
     print(f"chunks: {stats.chunks}, added: {stats.added}, skipped: {stats.skipped}")
-    print("initial:")
-    for i, d in enumerate(initial[:3], 1):
+    print("initial (top5):")
+    for i, d in enumerate(initial[:5], 1):
         src = d.metadata.get("source", "unknown")
         snippet = d.page_content.replace("\n", " ")[:120]
         print(f"{i}. {src} | {snippet}")
-    print("reranked:")
-    for i, d in enumerate(reranked, 1):
+    print("reranked (top5):")
+    for i, d in enumerate(reranked[:5], 1):
         src = d.metadata.get("source", "unknown")
         snippet = d.page_content.replace("\n", " ")[:120]
         print(f"{i}. {src} | {snippet}")
+
 
 
 if __name__ == "__main__":
