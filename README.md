@@ -1,10 +1,11 @@
-## RAG Demos (HyDE / Query Expansion / Reranking)
+## RAG Demos (HyDE / StepBack / Recursive Retrieval / Reranking)
 
-This fork focuses on retrieval-only experiments built on LangChain. All three demos share one indexing pipeline and differ only in how they retrieve:
+This fork focuses on retrieval-only experiments built on LangChain. All four demos share one indexing pipeline and differ only in how they retrieve:
 
-- `hyde_demo.py` – plain similarity search
-- `query_expansion_demo.py` – similarity search over LLM-expanded queries
-- `reranking_demo.py` – similarity search + external reranker
+- `hyde_demo.py` – HyDE: generate hypothetical terms then retrieve
+- `stepback_demo.py` – StepBack: abstract high-level concepts then retrieve
+- `recursive_retrieval_demo.py` – two-stage parent/child retrieval
+- `reranking_demo.py` – vector recall then external reranker
 
 Design goals:
 
@@ -38,6 +39,7 @@ SILICONFLOW_API_KEY=sk-...
 SILICONFLOW_BASE_URL=https://api.siliconflow.cn
 EMBEDDING_MODEL=BAAI/bge-m3
 RERANKING_MODEL=Qwen/Qwen3-Reranker-0.6B
+LLM_MODEL=Qwen/Qwen3-VL-235B-A22B-Instruct
 ```
 
 `.gitignore` already excludes `.env` and `.venv*`.
@@ -46,22 +48,28 @@ RERANKING_MODEL=Qwen/Qwen3-Reranker-0.6B
 
 ## Run Demos
 
-HyDE (baseline similarity search):
+HyDE (hypothetical terms → retrieve):
 
 ```bash
 .venv/bin/python hyde_demo.py "What is LangChain Text Splitters?"
 ```
 
-Query Expansion:
+StepBack Prompt:
 
 ```bash
-.venv/bin/python query_expansion_demo.py "这个项目是干什么的?"
+.venv/bin/python stepback_demo.py "LangChain 项目提供了什么?"
 ```
 
 Reranking:
 
 ```bash
-.venv/bin/python reranking_demo.py "查询扩展和重排序技术"
+.venv/bin/python reranking_demo.py "重排序技术"
+```
+
+Recursive Retrieval (two-stage):
+
+```bash
+.venv/bin/python recursive_retrieval_demo.py "LangChain 如何组织检索?"
 ```
 
 Output format (example):

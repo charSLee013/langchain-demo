@@ -24,6 +24,8 @@ class SiliconFlowEmbeddings(Embeddings):
 
         if not self.api_key:
             raise ValueError("请设置 SILICONFLOW_API_KEY 环境变量")
+        if not self.base_url:
+            raise ValueError("请设置 SILICONFLOW_BASE_URL 环境变量")
 
     def _call_embedding_api(self, texts: List[str]) -> List[List[float]]:
         """调用 SiliconFlow 嵌入 API"""
@@ -42,7 +44,8 @@ class SiliconFlowEmbeddings(Embeddings):
             response = requests.post(
                 f"{self.base_url}/v1/embeddings",
                 headers=headers,
-                data=json.dumps(payload, ensure_ascii=False).encode('utf-8')
+                data=json.dumps(payload, ensure_ascii=False).encode('utf-8'),
+                timeout=30,
             )
             response.raise_for_status()
 
